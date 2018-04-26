@@ -1,11 +1,11 @@
 {
   "name": "@angulardynamic/databroker",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.1",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
     "docs": "npm run docs:build",
-    "docs:build": "compodoc -p tsconfig.json -n angulardynamic-databroker -d docs --hideGenerator",
+    "docs:build": "compodoc -p tsconfig.json -n @angulardynamic/databroker -d docs --hideGenerator",
     "docs:serve": "npm run docs:build -- -s",
     "docs:watch": "npm run docs:build -- -s -w",
     "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
@@ -20,20 +20,24 @@
     "preset": "jest-preset-angular",
     "setupTestFrameworkScriptFile": "<rootDir>/src/jest.ts"
   },
+  "main": "./dist/angulardynamic-databroker.umd.js",
+  "module": "./dist/angulardynamic-databroker.es5.js",
+  "es2015": "./dist/angulardynamic-databroker.js",
+  "typings": "./dist/angulardynamic-databroker.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/IncrediMed/angulardynamic-databroker"
+    "url": "https://github.com/angulardynamic/databroker"
   },
   "author": {
     "name": "Michael Rice",
-    "email": "meikeric@gmail.com"
+    "email": "angulardynamic@incredi.us"
   },
   "keywords": [
     "angular"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/IncrediMed/angulardynamic-databroker/issues"
+    "url": "https://github.com/angulardynamic/databroker/issues"
   },
   "dependencies": {
     "@types/jsonpath": "^0.2.0",
