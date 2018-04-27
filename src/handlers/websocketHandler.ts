@@ -1,5 +1,5 @@
-import { DataSource } from '../';
 import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/observable/dom/WebSocketSubject';
+import { DataSource } from '../dataSource';
 
 export interface WebsocketConfig {
     url: string;

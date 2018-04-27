@@ -1,5 +1,6 @@
 import { Injector } from '@angular/core';
-import { DataBrokerService, DataSource } from '../';
+import { DataBrokerService } from '../databroker.service';
+import { DataSource } from '../dataSource';
 import { IHandler } from './ihandler';
 export interface StaticConfig {
     data: any;

@@ -4,9 +4,6 @@
 	(factory((global['angulardynamic-databroker'] = {}),global.core,global.common,global.http,global.lodash,global.BehaviorSubject,global.of,global.operators,global.ErrorObservable,global.catchError));
 }(this, (function (exports,core,common,http,lodash,BehaviorSubject,of,operators,ErrorObservable,catchError) { 'use strict';
 
-// import { Subscription } from 'rxjs/Subscription';
-// import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-// import { catchError, retry } from 'rxjs/operators';
 var DataBrokerService = /** @class */ (function () {
     /**
      * @param {?} injector

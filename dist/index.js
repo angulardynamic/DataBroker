@@ -8,9 +8,6 @@ import { startWith, tap } from 'rxjs/operators';
 import { ErrorObservable as ErrorObservable$1 } from 'rxjs/observable/ErrorObservable';
 import { catchError as catchError$1 } from 'rxjs/operators/catchError';
 
-// import { Subscription } from 'rxjs/Subscription';
-// import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-// import { catchError, retry } from 'rxjs/operators';
 var DataBrokerService = /** @class */ (function () {
     /**
      * @param {?} injector

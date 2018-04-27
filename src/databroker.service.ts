@@ -1,14 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { isEmpty } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // import { Subscription } from 'rxjs/Subscription';
 // import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 // import { catchError, retry } from 'rxjs/operators';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 import { DataSource } from './dataSource';
-import { IHandler } from 'handlers/ihandler';
+import { IHandler } from './handlers/ihandler';
 
 @Injectable()
 export class DataBrokerService {

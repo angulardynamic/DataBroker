@@ -1,12 +1,12 @@
 import { Injector } from '@angular/core';
-import { DataBrokerService } from '../databroker.service';
-import { DataSource } from '../dataSource';
+import { Subscription } from 'rxjs';
 import { clone, isEmpty } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { DataBrokerService } from '../databroker.service';
+import { DataSource } from '../dataSource';
 import { Query } from '../filter/query';
 import { FilterService } from '../filter/filter.service';
 import { IHandler } from './ihandler';
-import { Subscription } from 'rxjs';
 
 export interface SubscriberConfig {
     trigger: string;

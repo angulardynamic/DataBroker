@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from './dataSource';
-import { IHandler } from 'handlers/ihandler';
+import { IHandler } from './handlers/ihandler';
 export declare class DataBrokerService {
     private injector;
     private dataSources;
