@@ -1,5 +1,3 @@
-import 'rxjs/add/operator/first';
-
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
@@ -39,7 +37,6 @@ describe('Service: FilterService', () => {
     });
 
     it('#filter: should filter and array', () => {
-
         const search: object = {
             'field': 'Madrid'
         };

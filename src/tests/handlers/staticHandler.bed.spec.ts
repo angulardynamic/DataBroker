@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { DataSource, DefaultType } from 'dataSource';
-import { DataBrokerService } from '../..';
+import { DataBrokerService } from 'databroker.service';
 import { Template } from 'template.service';
 import { StaticHandler, StaticConfig } from 'handlers/staticHandler';
 

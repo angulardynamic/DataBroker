@@ -1,6 +1,8 @@
 import { Injector } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Template, DataBrokerService, DataSource } from '../';
+import { Template } from '../template.service';
+import { DataBrokerService } from '../databroker.service';
+import { DataSource } from '../dataSource';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { IHandler } from './ihandler';
 import { catchError } from 'rxjs/operators/catchError';

@@ -3,8 +3,8 @@ import { DataBrokerService } from '../databroker.service';
 import { DataSource } from '../dataSource';
 import { clone, isEmpty } from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { Query } from '../transform/filter/query';
-import { FilterService } from '../transform/filter/filter.service';
+import { Query } from '../filter/query';
+import { FilterService } from '../filter/filter.service';
 import { IHandler } from './ihandler';
 import { Subscription } from 'rxjs';
 

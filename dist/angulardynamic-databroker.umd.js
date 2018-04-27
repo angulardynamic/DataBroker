@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/common/http'), require('lodash'), require('rxjs/BehaviorSubject'), require('rxjs/observable/of'), require('rxjs/operators')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/common/http', 'lodash', 'rxjs/BehaviorSubject', 'rxjs/observable/of', 'rxjs/operators'], factory) :
-	(factory((global['angulardynamic-databroker'] = {}),global.core,global.common,global.http,global.lodash,global.BehaviorSubject,global.of,global.operators));
-}(this, (function (exports,core,common,http,lodash,BehaviorSubject,of,operators) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/common/http'), require('lodash'), require('rxjs/BehaviorSubject'), require('rxjs/observable/of'), require('rxjs/operators'), require('rxjs/observable/ErrorObservable'), require('rxjs/operators/catchError')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/common/http', 'lodash', 'rxjs/BehaviorSubject', 'rxjs/observable/of', 'rxjs/operators', 'rxjs/observable/ErrorObservable', 'rxjs/operators/catchError'], factory) :
+	(factory((global['angulardynamic-databroker'] = {}),global.core,global.common,global.http,global.lodash,global.BehaviorSubject,global.of,global.operators,global.ErrorObservable,global.catchError));
+}(this, (function (exports,core,common,http,lodash,BehaviorSubject,of,operators,ErrorObservable,catchError) { 'use strict';
 
 // import { Subscription } from 'rxjs/Subscription';
 // import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -501,10 +501,260 @@ DefaultType[DefaultType.array] = "array";
 DefaultType[DefaultType.object] = "object";
 DefaultType[DefaultType.string] = "string";
 
+var IHandler = /** @class */ (function () {
+    function IHandler() {
+    }
+    /**
+     * @param {?} dataSource
+     * @return {?}
+     */
+    IHandler.prototype.handle = function (dataSource) {
+    };
+    return IHandler;
+}());
+
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var StaticHandler = /** @class */ (function (_super) {
+    __extends(StaticHandler, _super);
+    /**
+     * @param {?} injector
+     * @param {?} dataBroker
+     */
+    function StaticHandler(injector, dataBroker) {
+        var _this = _super.call(this) || this;
+        _this.injector = injector;
+        _this.dataBroker = dataBroker;
+        return _this;
+    }
+    /**
+     * @param {?} dataSource
+     * @return {?}
+     */
+    StaticHandler.prototype.handle = function (dataSource) {
+        // console.debug(`DataBrokerService:sendStaticData("${dataSource.id}")`);
+        // let dataSource = this.dataBroker.getDataSource(serviceId);
+        var /** @type {?} */ config;
+        if (!dataSource.hasOwnProperty('config')) {
+            return;
+        }
+        config = /** @type {?} */ (dataSource.config);
+        this.dataBroker.publishData(dataSource.id, config.data);
+    };
+    return StaticHandler;
+}(IHandler));
+
+var __extends$1 = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var HttpResponseType = {};
+HttpResponseType.arraybuffer = /** @type {?} */ ('arraybuffer');
+HttpResponseType.blob = /** @type {?} */ ('blob');
+HttpResponseType.json = /** @type {?} */ ('json');
+HttpResponseType.text = /** @type {?} */ ('text');
+HttpResponseType[HttpResponseType.arraybuffer] = "arraybuffer";
+HttpResponseType[HttpResponseType.blob] = "blob";
+HttpResponseType[HttpResponseType.json] = "json";
+HttpResponseType[HttpResponseType.text] = "text";
+var HttpGetHandler = /** @class */ (function (_super) {
+    __extends$1(HttpGetHandler, _super);
+    /**
+     * @param {?} injector
+     * @param {?} dataBroker
+     */
+    function HttpGetHandler(injector, dataBroker) {
+        var _this = _super.call(this) || this;
+        _this.injector = injector;
+        _this.dataBroker = dataBroker;
+        _this.http = injector.get(http.HttpClient);
+        _this.template = injector.get(Template);
+        return _this;
+    }
+    /**
+     * @param {?} dataSource
+     * @return {?}
+     */
+    HttpGetHandler.prototype.handle = function (dataSource) {
+        // TODO: check for fullyQualifiedDomain
+        // if (fullyQualifiedDomain)
+        var _this = this;
+        // serviceId: string
+        // if (this.dataBroker.hasDataSource(serviceId)) {
+        // let dataSource = this.dataBroker.getDataSource(serviceId);
+        var /** @type {?} */ config;
+        if (!dataSource.hasOwnProperty('config')) {
+            return;
+        }
+        config = /** @type {?} */ (dataSource.config);
+        if (!config.hasOwnProperty('url')) {
+            console.error('<HttpGet>DataSource.config missing \'url\'');
+            return;
+        }
+        var /** @type {?} */ serviceUrlTmpl = config.url;
+        if (serviceUrlTmpl !== null) {
+            var /** @type {?} */ dObject = {};
+            var /** @type {?} */ ctx = this.dataBroker.getDataPublisher('context');
+            // if (ctx)
+            // {
+            //     ctx.subscribe((context) => {
+            //         console.log("DataBrokerService:Received:context:", context);
+            //         this.cachedData["context"] = context;
+            //     });
+            // }
+            // data["context"] = await ctx.first().toPromise();
+            if (ctx) {
+                dObject['context'] = ctx.value;
+            }
+            // console.debug('DataBrokerService:data["context"]: ', dObject["context"]);
+            var /** @type {?} */ matches = [];
+            var /** @type {?} */ serviceUrl = this.template.parseTpl(serviceUrlTmpl, dObject, matches);
+            // if (matches.length > 0)
+            // {
+            //     matches.forEach(match => {
+            //         if (!this.dependencies.has(match)) {
+            //             this.dependencies.set(match, []);
+            //         }
+            //         this.dependencies.get(match).push(serviceId);
+            //     });
+            // }
+            // console.log(" Databroker:dependencies:", this.dependencies);
+            var /** @type {?} */ responseType = 'json';
+            // console.log("serviceUrl", serviceUrl);
+            // TODO: This probably won't work...
+            this.http.get(serviceUrl, { responseType: /** @type {?} */ (responseType) })
+                .pipe(catchError.catchError(this.handleError))
+                .subscribe(function (data) {
+                var /** @type {?} */ sId = dataSource.id;
+                // console.debug(" refreshData Received from:", sId, "data:", data);
+                _this.dataBroker.publishData(sId, data);
+            }, function (error) {
+            });
+        }
+        // }
+        // else
+        // {
+        //     console.error(` refreshData:serviceId: "${serviceId}" not found.`);
+        // }
+        // return this.data.get(service);
+    };
+    /**
+     * @param {?} error
+     * @return {?}
+     */
+    HttpGetHandler.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error('An error occurred:', error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " +
+                ("body was: " + error.error));
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable.ErrorObservable('Something bad happened; please try again later.');
+    };
+    
+    return HttpGetHandler;
+}(IHandler));
+
+var __extends$2 = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var HttpPostHandler = /** @class */ (function (_super) {
+    __extends$2(HttpPostHandler, _super);
+    /**
+     * @param {?} injector
+     * @param {?} dataBroker
+     */
+    function HttpPostHandler(injector, dataBroker) {
+        var _this = _super.call(this) || this;
+        _this.injector = injector;
+        _this.dataBroker = dataBroker;
+        _this.http = injector.get(http.HttpClient);
+        _this.template = injector.get(Template);
+        return _this;
+    }
+    /**
+     * @param {?} dataSource
+     * @return {?}
+     */
+    HttpPostHandler.prototype.handle = function (dataSource) {
+        // if (this.dataBroker.hasDataSource(serviceId)) {
+        // let dataSource = this.dataBroker.getDataSource(serviceId);
+        var _this = this;
+        // this.dataSources.get(serviceId).id;
+        var /** @type {?} */ dataSourceConfig = /** @type {?} */ (dataSource.config);
+        var /** @type {?} */ dataSubscriber = this.dataBroker.subscribeData(dataSource.id)
+            .subscribe(function (body) {
+            var /** @type {?} */ config = dataSourceConfig;
+            var /** @type {?} */ serviceUrl = config.url;
+            var /** @type {?} */ httpOptions = {};
+            _this.http.post(serviceUrl, body, httpOptions)
+                // .pipe(
+                //     catchError(this.handleError('addHero', body))
+                // )
+                .subscribe(function (data) {
+                if (config.result) {
+                    var /** @type {?} */ result = config.result;
+                    _this.dataBroker.publishData(result, data);
+                }
+            });
+        });
+    };
+    /**
+     * @param {?} error
+     * @return {?}
+     */
+    HttpPostHandler.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error('An error occurred:', error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " +
+                ("body was: " + error.error));
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable.ErrorObservable('Something bad happened; please try again later.');
+    };
+    
+    return HttpPostHandler;
+}(IHandler));
+
 exports.DataBrokerModule = DataBrokerModule;
 exports.DataBrokerService = DataBrokerService;
 exports.DefaultType = DefaultType;
 exports.Template = Template;
+exports.StaticHandler = StaticHandler;
+exports.HttpGetHandler = HttpGetHandler;
+exports.HttpResponseType = HttpResponseType;
+exports.HttpPostHandler = HttpPostHandler;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

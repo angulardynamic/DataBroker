@@ -1,7 +1,9 @@
 import { Injector } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { Template, DataBrokerService, DataSource } from '../';
+import { Template } from '../template.service';
+import { DataBrokerService } from '../databroker.service';
+import { DataSource } from '../dataSource';
 import { IHandler } from './ihandler';
 
 export interface HttpPostConfig {
@@ -10,7 +12,7 @@ export interface HttpPostConfig {
     error: string;
 }
 
-export class HttpPost extends IHandler {
+export class HttpPostHandler extends IHandler {
     private http: HttpClient;
     private template: Template;
 

@@ -7,7 +7,7 @@ import { Template } from '../template.service';
 
 // import { DataSourceType } from 'dataSource';
 import { HttpGetHandler } from './httpgetHandler';
-import { HttpPost } from './httppostHandler';
+import { HttpPostHandler } from './httppostHandler';
 import { Transform } from './transformHandler';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { Transform } from './transformHandler';
 export class HandlersModule {
     constructor(private injector: Injector, dataBrokerService: DataBrokerService) {
         dataBrokerService.registerHandler('HttpGet', new HttpGetHandler(injector, dataBrokerService));
-        dataBrokerService.registerHandler('HttpPost', new HttpPost(injector, dataBrokerService));
+        dataBrokerService.registerHandler('HttpPost', new HttpPostHandler(injector, dataBrokerService));
         dataBrokerService.registerHandler('Subscriber', new Transform(injector, dataBrokerService));
     }
 }

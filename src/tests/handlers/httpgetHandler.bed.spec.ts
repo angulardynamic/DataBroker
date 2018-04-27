@@ -4,9 +4,9 @@ import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { HttpGetHandler, HttpGetConfig } from '../../handlers/httpgetHandler';
+import { HttpGetHandler, HttpGetConfig } from 'handlers/httpgetHandler';
 import { DataSource, DefaultType } from 'dataSource';
-import { DataBrokerService } from '../..';
+import { DataBrokerService } from 'databroker.service';
 import { Template } from 'template.service';
 
 const mockAirports = {
